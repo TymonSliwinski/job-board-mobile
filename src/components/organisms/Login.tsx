@@ -6,7 +6,6 @@ import { Storage } from '../../helpers';
 import TextInput from '../atoms/TextInput';
 import Auth from '../../api/auth';
 
-
 const Login = ({ navigation, register }) => {
 	const theme = useTheme();
 	const style = styles(theme.colors);
@@ -29,12 +28,12 @@ const Login = ({ navigation, register }) => {
 		Storage.removeItem('accessToken');
 		Storage.removeItem('refreshToken');
 		Storage.removeItem('userType');
-		console.log(response);
+
 		await Storage.setItem('accessToken', response.accessToken);
 		await Storage.setItem('refreshToken', response.refreshToken);
 		await Storage.setItem('userType', response.userType);
 		navigation.replace('Profile');
-	}
+	};
 
 	return (
 		<View style={style.container}>

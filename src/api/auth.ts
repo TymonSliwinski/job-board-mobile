@@ -1,8 +1,7 @@
 import axios from "axios";
-import { BACKEND_URL } from '@env';
 import { RegisterUser, UserType } from "../types/User";
 
-const axiosInstance = axios.create({ baseURL: BACKEND_URL, validateStatus(status) {
+const axiosInstance = axios.create({ baseURL: process.env.EXPO_PUBLIC_BACKEND_URL, validateStatus(status) {
     return true;
 }});
 
@@ -71,7 +70,6 @@ export default class Auth {
     static logout = async () => {
         try {
             const response = await axiosInstance.get('auth/logout');
-            console.log(response.data);
             if (response.status !== 200) {
                 throw new Error(response.data.message);
             }
@@ -82,4 +80,3 @@ export default class Auth {
         }
     }
 }
-

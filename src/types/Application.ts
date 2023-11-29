@@ -29,9 +29,9 @@ export type application = {
 };
 
 export type CompanyApplication = {
-    offerId: number,
-    offerTitle: string,
-    applications: application[],
+    id: number,
+    title: string,
+    Application: application[],
 };
 
 export type DeveloperApplication = {

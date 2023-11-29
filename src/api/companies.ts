@@ -1,8 +1,7 @@
 import axios from "axios";
-import { BACKEND_URL } from '@env';
 import { Company } from "../types/User";
 
-const axiosInstance = axios.create({ baseURL: BACKEND_URL });
+const axiosInstance = axios.create({ baseURL: process.env.EXPO_PUBLIC_BACKEND_URL });
 
 export default class Companies {
     static getAll = async () => {

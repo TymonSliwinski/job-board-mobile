@@ -3,26 +3,41 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider, configureFonts } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font/build/FontHooks';
-import AppLoading from 'expo-app-loading';
-import theme from './src/constants/theme';
+import * as SplashScreen from 'expo-splash-screen';
+import DefaultTheme from './src/constants/theme';
 import Navigation from './src/navigation/Tabs';
 import { Storage, getCompaniesById, getCompanyPictures } from './src/helpers';
 
 export default function App() {
-	let [fontsLoaded] = useFonts({
+	const [fontsLoaded] = useFonts({
 		Montserrat: require('./src/assets/fonts/Montserrat-Regular.ttf'),
 		'Montserrat-Bold': require('./src/assets/fonts/Montserrat-Bold.ttf'),
 	});
+
 	React.useEffect(() => {
-		(async () => {
-			await Storage.setItem('companyPictures', await getCompanyPictures());
+		const loadData = async () => {
+			await Storage.setItem(
+				'companyPictures',
+				await getCompanyPictures()
+			);
 			await Storage.setItem('companies', await getCompaniesById());
-		})();
+		};
+
+		SplashScreen.preventAutoHideAsync();
+
+		loadData().then(() => {
+			SplashScreen.hideAsync();
+		});
 	}, []);
+
 	if (!fontsLoaded) {
-		return <AppLoading />;
+		return null;
 	}
-	theme.fonts = configureFonts({ config: { fontFamily: 'Montserrat' } });
+
+	const theme = {
+		...DefaultTheme,
+		fonts: configureFonts({ config: { fontFamily: 'Montserrat' } }),
+	};
 
 	return (
 		<SafeAreaProvider>

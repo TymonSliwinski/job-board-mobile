@@ -1,9 +1,8 @@
 import axios from "axios";
-import { BACKEND_URL } from '@env';
-import { Filters, Offer } from "../types/Offer";
+import { CreateOfferDto, Filters, Offer } from "../types/Offer";
 import { objectToQueryString } from "../helpers";
 
-const axiosInstance = axios.create({ baseURL: BACKEND_URL });
+const axiosInstance = axios.create({ baseURL: process.env.EXPO_PUBLIC_BACKEND_URL });
 
 export default class Offers {
     static getAll = async (filters?: Filters) => {
@@ -30,14 +29,14 @@ export default class Offers {
         }
     };
 
-    static add = async (offer: Offer, accessToken: string) => {
+    static create = async (offer: CreateOfferDto, accessToken: string): Promise<Offer> => {
         const config = {
             headers :{
                 Authorization: `Bearer ${accessToken}`,
             }
         };
         try {
-            const result = axiosInstance.post('/offers', offer, config);
+            const result = (await axiosInstance.post('/offers', offer, config)).data;
             console.log(result);
             return result;
         } catch (err) {

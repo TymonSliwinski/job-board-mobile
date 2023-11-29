@@ -1,8 +1,7 @@
 import axios from "axios";
-import { BACKEND_URL } from '@env';
 import { ApplicationStatus, CompanyApplication, DeveloperApplication } from '../types/Application';
 
-const axiosInstance = axios.create({ baseURL: BACKEND_URL, validateStatus(status) {
+const axiosInstance = axios.create({ baseURL: process.env.EXPO_PUBLIC_BACKEND_URL, validateStatus(status) {
     return true;
 }});
 
@@ -21,7 +20,7 @@ export default class Application {
             throw new Error(response.data.message);
         } catch (err) {
             console.log(err.message);
-            return err.message;
+            return [];
         }
     }
 
@@ -34,7 +33,7 @@ export default class Application {
         try {
             const response = await axiosInstance.post(`applications/${id}/status`, { status }, config);
             if (response.status === 200 && response.data.status === status) {
-                return true;
+                return response.data.status;
             }
             throw new Error(response.data.message);
         } catch (err) {

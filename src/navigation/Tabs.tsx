@@ -4,6 +4,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from '../screens/ProfileScreen';
 import OfferScreen from "../screens/OfferScreen";
 import ApplyScreen from '../screens/ApplyScreen';
+import CreateOfferScreen from '../screens/CreateOfferScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const Navigation = () => {
                 <Stack.Screen name='Profile' component={ProfileScreen} />
                 <Stack.Screen name='Offer' component={OfferScreen} />
                 <Stack.Screen name='Apply' component={ApplyScreen} />
+                <Stack.Screen name='CreateOffer' component={CreateOfferScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

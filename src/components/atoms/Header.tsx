@@ -8,7 +8,7 @@ const Header = ({ navigation }) => {
 	return (
         <View style={style.container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.replace('Home')}
                 >
             <Text style={[theme.fonts.default, style.headingText]}>
                 Job {"\n"}board
@@ -16,7 +16,7 @@ const Header = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ margin: 9 }}
-                onPress={() => navigation.navigate('Profile')}
+                onPress={() => navigation.replace('Profile')}
                 >
                 <Image
                     source={require("../../assets/icons/user.png")}

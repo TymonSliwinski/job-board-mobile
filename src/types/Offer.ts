@@ -1,13 +1,28 @@
 
 export enum Category {
-    Frontend,
-    Backend,
-    Fullstack,
-    DevOps,
-    BI,
-    Data,
-    PM,
-    Design,
+    Frontend = 'Frontend',
+    Backend = 'Backend',
+    Fullstack = 'Fullstack',
+    DevOps = 'DevOps',
+    BI = 'BI',
+    Data = 'Data',
+    PM = 'PM',
+    Design = 'Design',
+};
+
+export type Requirement = {
+    name: string,
+    level: 1 | 2 | 3 | 4 | 5,
+};
+
+export type CreateOfferDto = {
+    title: string,
+    description: string,
+    category: Category,
+    requirements: object,
+    location: string,
+    salaryLower?: number,
+    salaryUpper?: number,
 };
 
 export type Offer = {
@@ -15,7 +30,7 @@ export type Offer = {
     title: string,
     description: string,
     category: Category,
-    requirements: string,
+    requirements: object,
     location: string,
     salaryLower?: number,
     salaryUpper?: number,

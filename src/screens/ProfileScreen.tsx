@@ -46,9 +46,13 @@ const ProfileScreen = ({ navigation }) => {
 		<>
 			<Header navigation={navigation} />
 
-			{auth ? <Profile nagivation={navigation}/> : (
-				register ? <Register navigation={navigation} /> :
-				<Login navigation={navigation} register={setRegister} />)}
+			{auth ? (
+				<Profile nagivation={navigation} />
+			) : register ? (
+				<Register navigation={navigation} />
+			) : (
+				<Login navigation={navigation} register={setRegister} />
+			)}
 		</>
 	);
 };

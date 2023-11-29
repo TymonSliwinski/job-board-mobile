@@ -22,7 +22,6 @@ const Apply = (props: React.PropsWithChildren<IApply>) => {
 
     const handleApply = async (offerId: number, text: string) => {
         const accessToken = await Storage.getItem('accessToken');
-        console.log('accessToken :>> ', accessToken);
     
         const response = await Application.apply(offerId, text, accessToken);
         let title: string, message: string;

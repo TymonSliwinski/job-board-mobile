@@ -38,7 +38,7 @@ export const pickImageAsync = async () => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
         aspect: [4, 3],
-        quality: 1,
+        quality: 0.2,
         base64: true,
     });
 
@@ -135,3 +135,16 @@ export class Storage {
         }
     };
 };
+
+export const parseSalary = (salaryLower: number, salaryUpper: number): string => {
+    if (salaryLower || salaryUpper) {
+        if (salaryLower && !salaryUpper) {
+            return `From ${salaryLower}`;
+        } else if (!salaryLower && salaryUpper) {
+            return `Up to ${salaryUpper}`;
+        }
+        return `${salaryLower} - ${salaryUpper}`;
+    }
+    return 'Salary undisclosed';
+};
+

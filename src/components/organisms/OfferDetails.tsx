@@ -4,7 +4,7 @@ import { Button, useTheme } from 'react-native-paper';
 import { MD3Colors } from 'react-native-paper/lib/typescript/src/types';
 import { Offer } from '../../types/Offer';
 import Requirements from '../atoms/Requirements';
-import { Storage } from '../../helpers';
+import { Storage, parseSalary } from '../../helpers';
 import { UserType } from '../../types/User';
 
 interface IOffer {
@@ -12,11 +12,10 @@ interface IOffer {
 	offer: Offer;
 	picture: string;
 	company: any;
-	salaryString: string;
 }
 
 const OfferDetails = (props: React.PropsWithChildren<IOffer>) => {
-	const { navigation, offer, company, salaryString } = props;
+	const { navigation, offer, company } = props;
 	let { picture } = props;
 	if (!picture.includes('data:image/jpeg;base64,')) {
 		picture = `data:image/jpeg;base64,${picture}`;
@@ -41,13 +40,13 @@ const OfferDetails = (props: React.PropsWithChildren<IOffer>) => {
 				<View style={style.titleContainer}>
 					<Text style={style.title}>{offer.title}</Text>
 					<Text style={style.companyName}>{company.name}</Text>
-					<Text style={style.location}>{company.location}</Text>
-					<Text style={style.salary}>{salaryString}</Text>
+					<Text style={style.location}>{offer.location}</Text>
+					<Text style={style.salary}>{parseSalary(offer.salaryLower, offer.salaryUpper)}</Text>
 				</View>
 			</View>
 			<View style={style.separator} />
 			<View style={style.body}>
-				<Requirements requirements={JSON.parse(offer.requirements)} />
+				<Requirements requirements={offer.requirements} />
 				<Text style={style.descriptionTitle}>Description</Text>
 				<View style={style.separator} />
 				<ScrollView scrollEnabled={true}>

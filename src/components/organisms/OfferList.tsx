@@ -48,7 +48,7 @@ const OfferList = (props: React.PropsWithChildren<IOffersProps>) => {
 							<OfferTile
 								navigation={navigation}
 								offer={item}
-								pictures={pictures}
+								picture={pictures[item.companyId]}
 								company={companies[item.companyId]}
 							/>
 					)}
