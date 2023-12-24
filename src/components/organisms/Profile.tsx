@@ -59,22 +59,22 @@ const Profile = ({ nagivation }) => {
 
 	return (
 		<View style={style.container}>
-			<Text variant="headlineMedium">Applications</Text>
+			<Text variant='headlineMedium'>Applications</Text>
 			<View style={style.applicationContainer}>
 				{userType === UserType.COMPANY && applications && (
 					<>
 					<Portal>
 						<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={style.modalStyle}>
 							<View style={style.infoContainer}>
-								<Text variant="headlineMedium">{selectedApplication?.developer.firstName}{' '}{selectedApplication?.developer.lastName}</Text>
-								<Text variant="headlineSmall">{selectedApplication?.developer.user.email}</Text>
-								<Text variant="bodyMedium">{selectedApplication?.description}</Text>
+								<Text variant='headlineMedium'>{selectedApplication?.developer.firstName}{' '}{selectedApplication?.developer.lastName}</Text>
+								<Text variant='headlineSmall'>{selectedApplication?.developer.user.email}</Text>
+								<Text variant='bodyMedium'>{selectedApplication?.description}</Text>
 							</View>
 							<View style={style.footer}>
-								<Button style={style.button} mode="contained" onPress={() => {resolveApplication(selectedApplication.id, Status.ACCEPTED); hideModal()}}>
+								<Button style={style.button} mode='contained' onPress={() => {resolveApplication(selectedApplication.id, Status.ACCEPTED); hideModal()}}>
 									Accept
 								</Button>
-								<Button style={style.button} mode="contained" onPress={() => {resolveApplication(selectedApplication.id, Status.REJECTED); hideModal()}}>
+								<Button style={style.button} mode='contained' onPress={() => {resolveApplication(selectedApplication.id, Status.REJECTED); hideModal()}}>
 									Reject
 								</Button>
 							</View>
@@ -143,7 +143,7 @@ const Profile = ({ nagivation }) => {
 			<View style={style.footer}>
 				{userType === UserType.COMPANY && (
 					<Button
-						mode="contained"
+						mode='contained'
 						labelStyle={style.buttonText}
 						style={style.button}
 						onPress={() => {
@@ -154,7 +154,7 @@ const Profile = ({ nagivation }) => {
 					</Button>
 				)}
 				<Button
-					mode="contained"
+					mode='contained'
 					labelStyle={style.buttonText}
 					style={style.button}
 					onPress={() => {

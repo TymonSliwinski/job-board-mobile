@@ -24,13 +24,22 @@ const Searchbar = (props: React.PropsWithChildren<ISearchbarProps>) => {
 	const theme = useTheme();
 	const style = styles(theme.colors);
 
-	const [text, onChangeText] = React.useState("");
+	const [text, setText] = React.useState("");
 	const [filters, setFilters] = React.useState({});
 	const [modalVisible, setModalVisible] = React.useState(false);
 
+	const onChangeText = (text: string) => {
+		setText(text);
+		setFilters({ ...filters, text });
+	};
+
+	const handleSearch = async (filters: Filters) => {
+		setOffers(await search(filters));
+	};
+
 	return (
 		<View style={style.container}>
-			<FiltersModal setFilters={setFilters} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+			<FiltersModal filters={filters} setFilters={setFilters} modalVisible={modalVisible} setModalVisible={setModalVisible} search={handleSearch} />
 			<View style={style.inputContainer}>
                 <TouchableOpacity
                     onPress={() => setModalVisible(!modalVisible)}
@@ -46,7 +55,7 @@ const Searchbar = (props: React.PropsWithChildren<ISearchbarProps>) => {
 					onChangeText={onChangeText}
 				/>
                 <TouchableOpacity
-                    onPress={async () => { setOffers(await search({ text })); Keyboard.dismiss() }}
+                    onPress={async () => { handleSearch(filters); Keyboard.dismiss() }}
                     >
                     <Image
                         source={require("../../assets/icons/magnifying-glass.png")}
