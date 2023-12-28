@@ -1,37 +1,44 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
 import { MD3Colors } from 'react-native-paper/lib/typescript/src/types';
 import { Offer } from '../../types/Offer';
 import Requirements from '../atoms/Requirements';
 import { Storage, parseSalary } from '../../helpers';
-import { UserType } from '../../types/User';
+import { Company, UserType } from '../../types/User';
+import Offers from '../../api/offers';
 
 interface IOffer {
     navigation: any;
 	offer: Offer;
-	picture: string;
-	company: any;
 }
 
 const OfferDetails = (props: React.PropsWithChildren<IOffer>) => {
-	const { navigation, offer, company } = props;
-	let { picture } = props;
-	if (!picture.includes('data:image/jpeg;base64,')) {
-		picture = `data:image/jpeg;base64,${picture}`;
-	}
+	const { navigation, offer } = props;
+	
+	const [company, setCompany] = useState<Company>();
+	const [picture, setPicture] = useState('data:image/jpeg;base64,');
+	const [userType, setUserType] = useState('');
+
+	useEffect(() => {
+		(async () => {
+			const companies = await Storage.getItem('companies');
+			setCompany(companies[offer.companyId]);
+
+			const pictures = await Storage.getItem('companyPictures');
+			let picture = pictures[offer.companyId];
+			if (!picture.includes('data:image/jpeg;base64,')) {
+				picture = `data:image/jpeg;base64,${picture}`;
+			}
+			setPicture(picture);
+			
+			const userType = await Storage.getItem('userType');
+			setUserType(userType);
+		})();
+	}, []);
 
 	const theme = useTheme();
 	const style = styles(theme.colors);
-
-    const [userType, setUserType] = React.useState('');
-    React.useEffect(() => {
-        const getUserType = async () => {
-            setUserType(await Storage.getItem('userType'));
-        };
-        getUserType();
-    }, []);
-
 
 	return (
 		<View style={style.container}>
@@ -39,7 +46,7 @@ const OfferDetails = (props: React.PropsWithChildren<IOffer>) => {
 				<Image style={style.image} source={{ uri: picture }} />
 				<View style={style.titleContainer}>
 					<Text style={style.title}>{offer.title}</Text>
-					<Text style={style.companyName}>{company.name}</Text>
+					<Text style={style.companyName}>{company?.name}</Text>
 					<Text style={style.location}>{offer.location}</Text>
 					<Text style={style.salary}>{parseSalary(offer.salaryLower, offer.salaryUpper)}</Text>
 				</View>
@@ -53,9 +60,9 @@ const OfferDetails = (props: React.PropsWithChildren<IOffer>) => {
 					<Text style={style.description}>{offer.description}</Text>
 				</ScrollView>
 			</View>
-            {
-                userType === UserType.DEVELOPER &&
-                <View style={style.footer}>
+			<View style={style.footer}>
+				{
+					userType === UserType.DEVELOPER &&
                     <Button
                         mode='contained'
                         style={style.button}
@@ -64,8 +71,19 @@ const OfferDetails = (props: React.PropsWithChildren<IOffer>) => {
                     >
                         Apply
                     </Button>
-                </View>
-            }
+				}
+				{
+					userType === UserType.COMPANY && offer.companyId === company.id &&
+					<Button
+						mode='contained'
+						style={style.button}
+						labelStyle={style.buttonText}
+						onPress={async () => { await Offers.delete(offer.id, await Storage.getItem('accessToken')); navigation.navigate('Home'); } }
+					>
+						Delete Offer
+					</Button>
+				}
+			</View>
 		</View>
 	);
 };

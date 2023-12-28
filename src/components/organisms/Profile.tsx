@@ -118,12 +118,6 @@ const Profile = ({ nagivation }) => {
 							<List.Item
 								title={item.offer.title}
 								description={item.offer.company.name}
-								onPress={() => {
-									nagivation.navigate('Offer', {
-										offer: item.offer,
-										company: item.offer.company,
-									});
-								}}
 								left={() => (
 									<Text>
 										{new Date(item.createdAt).toLocaleDateString()}

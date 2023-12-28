@@ -23,6 +23,8 @@ export type CreateOfferDto = {
     location: string,
     salaryLower?: number,
     salaryUpper?: number,
+    latitude: number,
+    longitude: number,
 };
 
 export type Offer = {
@@ -34,6 +36,8 @@ export type Offer = {
     location: string,
     salaryLower?: number,
     salaryUpper?: number,
+    latitude: number,
+    longitude: number,
     createdAt: Date,
     companyId: number
 };

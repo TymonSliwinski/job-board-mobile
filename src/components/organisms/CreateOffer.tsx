@@ -7,6 +7,7 @@ import { Category, CreateOfferDto, Requirement } from '../../types/Offer';
 import Offers from '../../api/offers';
 import { Storage } from '../../helpers';
 import Dropdown from '../molecules/Dropdown';
+import { geocodeAddress } from '../../api/geocode';
 
 
 
@@ -78,6 +79,8 @@ const CreateOffer = ({ navigation }) => {
 		const data: CreateOfferDto = {
 			...inputs,
 			requirements: requirementsJson,
+			latitude: 0,
+			longitude: 0,
 		};
 		if (
 			!data.title ||
@@ -101,16 +104,23 @@ const CreateOffer = ({ navigation }) => {
 
 		if (data.salaryLower) {
 			data.salaryLower = Number(data.salaryLower);
+		} else {
+			data.salaryLower = null;
 		}
 
 		if (data.salaryUpper) {
 			data.salaryUpper = Number(data.salaryUpper);
+		} else {
+			data.salaryUpper = null;
 		}
 
+		const { latitude, longitude } = await geocodeAddress(data.location);
+
+		data['latitude'] = latitude;
+		data['longitude'] = longitude;
+
 		try {
-			const response = await Offers.create(
-				data,
-				await Storage.getItem('accessToken')
+			await Offers.create(data, await Storage.getItem('accessToken')
 			);
 			Alert.alert('Success', 'Offer posted successfuly', [
 				{
@@ -118,8 +128,9 @@ const CreateOffer = ({ navigation }) => {
 					onPress: () => navigation.replace('Profile'),
 				},
 			]);
-		} catch (error) {
-			Alert.alert('Error', error);
+		} catch (err) {
+			console.log(err);
+			// Alert.alert('Error', err);
 		}
 	};
 	return (

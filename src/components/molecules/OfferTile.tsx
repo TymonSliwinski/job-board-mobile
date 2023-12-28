@@ -22,7 +22,7 @@ const OfferTile = (props: React.PropsWithChildren<IOffer>) => {
     const uri = !picture?.includes('data:image/jpeg;base64,') ? `data:image/jpeg;base64,${picture}` : picture;
     return (
         <TouchableOpacity style={style.container}
-            onPress={() => navigation.navigate('Offer', { offer, picture: picture, company })}
+            onPress={() => navigation.navigate('Offer', { offer })}
             >
             <Image
                 style={style.image}
